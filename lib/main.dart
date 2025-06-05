@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/comment.dart';
-import 'models/category.dart';
 import 'controllers/task.dart';
 import 'controllers/category.dart';
 import 'views/create_task.dart';
@@ -40,21 +39,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryController = Provider.of<CategoryController>(context, listen: false);
-
-    // Temporary seed
-    if (categoryController.categories.isEmpty) {
-      categoryController.addCategory(
-        Category(id: '1', name: 'Home', colorHex: '#FF5733'),
-      );
-      categoryController.addCategory(
-        Category(id: '2', name: 'Work', colorHex: '#33B5FF'),
-      );
-      categoryController.addCategory(
-        Category(id: '3', name: 'Personal', colorHex: '#33FFB5'),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(title: Text('LifeTasker')),
       body: Center(

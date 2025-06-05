@@ -131,9 +131,14 @@ class TaskCreationScreenState extends State<TaskCreationScreen> {
             Wrap(
               spacing: 8,
               children: categoryController.categories.map((category) {
+                final color = Color(int.parse(category.colorHex.replaceFirst('#', '0xff'))); // convert hex to Color
                 return ChoiceChip(
+                  avatar: Icon(category.iconData, color: Colors.white, size: 20),
                   label: Text(category.name),
                   selected: _selectedCategoryId == category.id,
+                  selectedColor: color,
+                  backgroundColor: color.withOpacity(0.6),
+                  labelStyle: TextStyle(color: Colors.white),
                   onSelected: (selected) {
                     setState(() {
                       _selectedCategoryId = category.id;

@@ -52,6 +52,8 @@ class DatabaseService {
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         color_hex TEXT NOT NULL,
+        icon_code INTEGER NOT NULL,
+        icon_font_family TEXT NOT NULL,
         is_user_defined INTEGER DEFAULT 1
       )
     ''');
