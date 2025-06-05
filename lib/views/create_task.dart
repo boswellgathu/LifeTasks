@@ -42,6 +42,7 @@ class TaskCreationScreenState extends State<TaskCreationScreen> {
     );
     if (date == null) return;
 
+    if (!context.mounted) return;
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -70,14 +71,14 @@ class TaskCreationScreenState extends State<TaskCreationScreen> {
 
   void _saveTask() async {
     if (_titleController.text.isEmpty || _selectedCategoryId == null) {
-      // Show error
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Title and Category are required')),
       );
       return;
     }
 
-    final taskId = Uuid().v4();
+    final taskId = const Uuid().v4();
     final now = DateTime.now();
     final newTask = Task(
       id: taskId,
@@ -100,7 +101,8 @@ class TaskCreationScreenState extends State<TaskCreationScreen> {
     final taskController = Provider.of<TaskController>(context, listen: false);
     await taskController.addTask(newTask);
 
-    Navigator.pop(context);
+    if (!mounted) return;
+    Navigator.pop(context); // <-- Only use context if still mounted
   }
 
   @override
