@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../controllers/task.dart';
 import 'create_task.dart';
+import 'task_details.dart';
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});
@@ -53,7 +54,11 @@ class TaskListScreenState extends State<TaskListScreen> {
                   ? Icon(Icons.check_circle, color: Colors.green)
                   : Icon(Icons.radio_button_unchecked, color: Colors.grey),
               onTap: () {
-                // TODO: Navigate to task detail/edit screen
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => TaskDetailScreen(task: task),
+                  ),
+                );
               },
             ),
           );

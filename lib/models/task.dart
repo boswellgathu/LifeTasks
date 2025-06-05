@@ -29,6 +29,38 @@ class Task {
     this.version = 1,
   });
 
+  Task copyWith({
+    String? id,
+    String? title,
+    String? description,
+    DateTime? scheduledStart,
+    Duration? scheduledDuration,
+    String? categoryId,
+    bool? isDone,
+    bool? isArchived,
+    String? imagePath,
+    DateTime? createdAt,
+    DateTime? lastModifiedAt,
+    String? modifiedBy,
+    int? version,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      scheduledStart: scheduledStart ?? this.scheduledStart,
+      scheduledDuration: scheduledDuration ?? this.scheduledDuration,
+      categoryId: categoryId ?? this.categoryId,
+      isDone: isDone ?? this.isDone,
+      isArchived: isArchived ?? this.isArchived,
+      imagePath: imagePath ?? this.imagePath,
+      createdAt: createdAt ?? this.createdAt,
+      lastModifiedAt: lastModifiedAt ?? this.lastModifiedAt,
+      modifiedBy: modifiedBy ?? this.modifiedBy,
+      version: version ?? this.version,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

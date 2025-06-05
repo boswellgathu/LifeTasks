@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/comment.dart';
 import 'models/category.dart';
 import 'controllers/task.dart';
 import 'controllers/category.dart';
@@ -12,12 +13,15 @@ void main() {
 }
 
 class LifeTaskerApp extends StatelessWidget {
+  const LifeTaskerApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TaskController()),
-        ChangeNotifierProvider(create: (_) => CategoryController()),
+        ChangeNotifierProvider(create: (_) => CategoryController()..loadCategories()),
+        ChangeNotifierProvider(create: (_) => CommentController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -32,6 +36,8 @@ class LifeTaskerApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final categoryController = Provider.of<CategoryController>(context, listen: false);
