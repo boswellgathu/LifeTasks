@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/category.dart';
+
 import '../controllers/task.dart';
+import '../controllers/category.dart';
 import '../models/category.dart';
+import 'create_category.dart';
 import 'create_task.dart';
 import 'task_details.dart';
+// Future screens:
+// import 'settings_screen.dart';
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});
@@ -17,7 +21,6 @@ class TaskListScreenState extends State<TaskListScreen> {
   @override
   void initState() {
     super.initState();
-    // Load tasks when screen opens
     final taskController = Provider.of<TaskController>(context, listen: false);
     taskController.loadTasks();
   }
@@ -25,11 +28,55 @@ class TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
     final taskController = Provider.of<TaskController>(context);
-    final categoryController = Provider.of<CategoryController>(context); // <-- Access categories
+    final categoryController = Provider.of<CategoryController>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Tasks'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            tooltip: 'New Task',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => TaskCreationScreen()),
+              );
+            },
+          ),
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'settings') {
+                // TODO: Navigate to Settings Screen
+              } else if (value == 'add_category') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => CategoryCreationScreen()),
+                );
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'add_category',
+                child: Row(
+                  children: [
+                    Icon(Icons.category, size: 20),
+                    SizedBox(width: 8),
+                    Text('Add Category'),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'settings',
+                child: Row(
+                  children: [
+                    Icon(Icons.settings, size: 20),
+                    SizedBox(width: 8),
+                    Text('Settings'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: taskController.isLoading
           ? Center(child: CircularProgressIndicator())
@@ -44,7 +91,7 @@ class TaskListScreenState extends State<TaskListScreen> {
             orElse: () => Category(
               id: 'default',
               name: 'Unknown',
-              colorHex: '#9E9E9E', // Grey color
+              colorHex: '#9E9E9E',
               iconCode: Icons.help_outline.codePoint,
               iconFontFamily: Icons.help_outline.fontFamily!,
             ),
@@ -68,18 +115,17 @@ class TaskListScreenState extends State<TaskListScreen> {
                       'Scheduled: ${task.scheduledStart!.toLocal()}',
                       style: TextStyle(fontSize: 12),
                     ),
-                  if (category.id != 'default')
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Chip(
-                        avatar: Icon(category.iconData, color: Colors.white, size: 16),
-                        label: Text(category.name),
-                        backgroundColor: Color(
-                          int.parse(category.colorHex.replaceFirst('#', '0xff')),
-                        ),
-                        labelStyle: TextStyle(color: Colors.white),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Chip(
+                      avatar: Icon(category.iconData, color: Colors.white, size: 16),
+                      label: Text(category.name),
+                      backgroundColor: Color(
+                        int.parse(category.colorHex.replaceFirst('#', '0xff')),
                       ),
+                      labelStyle: TextStyle(color: Colors.white),
                     ),
+                  ),
                 ],
               ),
               trailing: task.isDone
@@ -95,14 +141,6 @@ class TaskListScreenState extends State<TaskListScreen> {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => TaskCreationScreen()),
-          );
-        },
-        child: Icon(Icons.add),
       ),
     );
   }
