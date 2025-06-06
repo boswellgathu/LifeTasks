@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:lifetasker/views/scheduled_tasks.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../controllers/task.dart';
@@ -34,7 +35,7 @@ class TaskListScreenState extends State<TaskListScreen> {
     });
   }
 
-  List _filterTasks(List tasks) {
+  List<Task> _filterTasks(List<Task> tasks) {
     DateTime now = DateTime.now();
 
     switch (_selectedIndex) {
@@ -145,6 +146,14 @@ class TaskListScreenState extends State<TaskListScreen> {
       ));
     }
 
+    if (_selectedIndex == 1) {
+      // Only for Scheduled tab, show the new screen
+      return ScheduledTabScreen(
+        tasks: filteredTasks,
+        categoryController: categoryController,
+      );
+    }
+
     return ListView.builder(
       padding: EdgeInsets.all(16),
       itemCount: filteredTasks.length,
@@ -165,7 +174,7 @@ class TaskListScreenState extends State<TaskListScreen> {
     );
   }
 
-  Widget _buildTaskCard(task, category) {
+  Widget _buildTaskCard(Task task, Category category) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
